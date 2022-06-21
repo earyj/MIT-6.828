@@ -76,6 +76,7 @@ readseg(uint32_t pa, uint32_t count, uint32_t offset)
 	end_pa = pa + count;
 
 	// round down to sector boundary
+	// 将低9位全部置0
 	pa &= ~(SECTSIZE - 1);
 
 	// translate from bytes to sectors, and kernel starts at sector 1
@@ -110,6 +111,7 @@ readsect(void *dst, uint32_t offset)
 	waitdisk();
 
 	outb(0x1F2, 1);		// count = 1
+	// 根据offset指定读入扇区的位置
 	outb(0x1F3, offset);
 	outb(0x1F4, offset >> 8);
 	outb(0x1F5, offset >> 16);
@@ -120,6 +122,7 @@ readsect(void *dst, uint32_t offset)
 	waitdisk();
 
 	// read a sector
+	// 从0x1F0 端口分128次，每次读入4B数据
 	insl(0x1F0, dst, SECTSIZE/4);
 }
 
