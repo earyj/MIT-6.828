@@ -63,7 +63,7 @@ entry:
 	movl	%eax, %cr0
 
 	# Now paging is enabled, but we're still running at a low EIP
-	# (why is this okay?).  Jump up above KERNBASE before entering
+	# (why is this okay?).因为页表中第一项被映射到第0页  Jump up above KERNBASE before entering
 	# C code.
 	mov	$relocated, %eax
 	jmp	*%eax
